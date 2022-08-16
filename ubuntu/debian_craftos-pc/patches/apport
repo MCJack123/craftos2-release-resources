@@ -1,0 +1,34 @@
+Description: Apport support
+ This adds support for automatic Apport bug reporting.
+Author: JackMacWindows <jackmacwindowslinux@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2020-12-14
+
+--- /dev/null
++++ craftos-pc-2.4.5/apport_crashdb.conf
+@@ -0,0 +1,5 @@
++craftos_pc = {
++    'impl': 'launchpad',
++    'project': 'craftos-pc',
++    'bug_pattern_base': None,
++}
+--- /dev/null
++++ craftos-pc-2.4.5/apport_hook.py
+@@ -0,0 +1,6 @@
++from apport.hookutils import *
++import apport.packaging
++
++def add_info(report, ui):
++    if not apport.packaging.is_distro_package(report['Package'].split()[0]):
++        report['CrashDB'] = 'craftos_pc'

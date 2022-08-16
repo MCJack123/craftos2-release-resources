@@ -1,0 +1,24 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	export NOGIT=1
+	make
+	make linux-plugin
+
+override_dh_auto_install:
+	install -D -m 0755 craftos $$(pwd)/debian/craftos-pc-accelerated/usr/bin/craftos-luajit
+	install -D -m 0755 ccemux.so $$(pwd)/debian/craftos-pc-accelerated-ccemux/usr/share/craftos/plugins-luajit/ccemux.so
+	mkdir icons
+	unzip resources/linux-icons.zip -d icons
+	install -D -m 0644 icons/CraftOS-PC.desktop $$(pwd)/debian/craftos-pc-accelerated/usr/share/applications/CraftOSPCAccelerated.desktop
+	install -D -m 0644 icons/16.png $$(pwd)/debian/craftos-pc-accelerated/usr/share/icons/hicolor/16x16/apps/craftos-luajit.png
+	install -D -m 0644 icons/24.png $$(pwd)/debian/craftos-pc-accelerated/usr/share/icons/hicolor/24x24/apps/craftos-luajit.png
+	install -D -m 0644 icons/32.png $$(pwd)/debian/craftos-pc-accelerated/usr/share/icons/hicolor/32x32/apps/craftos-luajit.png
+	install -D -m 0644 icons/48.png $$(pwd)/debian/craftos-pc-accelerated/usr/share/icons/hicolor/48x48/apps/craftos-luajit.png
+	install -D -m 0644 icons/64.png $$(pwd)/debian/craftos-pc-accelerated/usr/share/icons/hicolor/64x64/apps/craftos-luajit.png
+	install -D -m 0644 icons/96.png $$(pwd)/debian/craftos-pc-accelerated/usr/share/icons/hicolor/96x96/apps/craftos-luajit.png
+
+override_dh_auto_test:

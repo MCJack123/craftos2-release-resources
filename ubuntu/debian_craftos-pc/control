@@ -1,0 +1,33 @@
+Source: craftos-pc
+Section: interpreters
+Priority: optional
+Maintainer: JackMacWindows <jackmacwindowslinux@gmail.com>
+Build-Depends: debhelper (>= 10), unzip, libsdl2-dev (>= 2.0.5), libsdl2-mixer-dev, libpoco-dev, libhpdf-dev, libpng++-dev (>= 0.2.7), libwebp-dev, libncurses5-dev, craftos-pc-data (>= 2.5), curl
+Standards-Version: 4.1.2
+Homepage: https://www.craftos-pc.cc
+Vcs-Git: https://github.com/MCJack123/craftos2.git
+Vcs-Browser: https://github.com/MCJack123/craftos2
+
+Package: craftos-pc
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libsdl2-2.0-0, libsdl2-mixer-2.0-0, libpoco-dev, libhpdf-2.3.0, libpng16-16, libwebp-dev, libwebpmux3, libncurses5, craftos-pc-data (>= 2.5)
+Breaks: craftos-pc-ccemux (<< 2.5)
+Description: Advanced ComputerCraft emulator
+ CraftOS-PC is the fastest emulator for the ComputerCraft mod for Minecraft.
+ It implements the CraftOS API in C++, with >99% compatibility.
+ In addition, it features various additional features, such as a debugger,
+ file mounting, and an exclusive graphics mode.
+
+Package: craftos-pc-ccemux
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, craftos-pc (>= 2.6), libsdl2-2.0-0
+Enhances: craftos-pc
+Breaks: craftos-pc (<< 2.6)
+Description: CCEmuX plugin for CraftOS-PC
+ Compatibility plugin for CraftOS-PC that allows using the CCEmuX API in CraftOS-PC.
+
+Package: craftos-pc-dev
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libsdl2-dev (>= 2.0.5), craftos-pc (>= 2.6)
+Description: Development files for CraftOS-PC plugins
+ Installs the headers and libraries necessary to develop plugins for CraftOS-PC.

@@ -1,0 +1,18 @@
+Source: craftos-pc-data
+Section: interpreters
+Priority: optional
+Maintainer: JackMacWindows <jackmacwindowslinux@gmail.com>
+Build-Depends: debhelper (>= 10), dh-exec
+Standards-Version: 4.1.2
+Homepage: https://github.com/MCJack123/craftos2-rom
+Vcs-Git: https://github.com/MCJack123/craftos2-rom.git
+Vcs-Browser: https://github.com/MCJack123/craftos2-rom
+
+Package: craftos-pc-data
+Architecture: all
+Depends: ${misc:Depends}
+Breaks: craftos-pc (<< 2.6.3)
+Conflicts: craftos-pc-cct-data
+Replaces: craftos-pc-cct-data
+Description: ROM package for CraftOS-PC
+ Supplies CraftOS operating system files for CraftOS-PC.
