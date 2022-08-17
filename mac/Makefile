@@ -45,11 +45,11 @@ macapp: craftos2-lua/src/liblua.dylib $(OBJ) $(ODIR)/platform_macapp.o
 	mkdir -p CraftOS-PC.app/Contents/Resources
 	CFLAGS="-target arm64-apple-macos11 -mmacosx-version-min=11.0" CPPFLAGS="-Iinclude_arm" ODIR=obj_arm SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk make _craftos_arm_app
 	echo " [LD]    CraftOS-PC.app/Contents/MacOS/craftos_x86"
-	clang++ -Linclude_arm -LCraftOS-PC.app/Contents/Frameworks -rdynamic -o CraftOS-PC.app/Contents/MacOS/craftos_x86 $^ $(LIBS) -F/Library/Frameworks -framework Foundation -framework AppKit -mmacosx-version-min=10.9 -target x86_64-apple-macos10.9
+	clang++ -Linclude_arm -LCraftOS-PC.app/Contents/Frameworks -rdynamic -o CraftOS-PC.app/Contents/MacOS/craftos_x86 $^ $(LIBS) -F/Library/Frameworks -framework Foundation -framework AppKit -mmacosx-version-min=10.15 -target x86_64-apple-macos10.15
 	echo " [LIPO]  CraftOS-PC.app/Contents/MacOS/craftos"
-	rm CraftOS-PC.app/Contents/MacOS/craftos
+	rm -f CraftOS-PC.app/Contents/MacOS/craftos
 	lipo -create -output CraftOS-PC.app/Contents/MacOS/craftos CraftOS-PC.app/Contents/MacOS/craftos_x86 CraftOS-PC.app/Contents/MacOS/craftos_arm
-	rm CraftOS-PC.app/Contents/MacOS/craftos_x86 CraftOS-PC.app/Contents/MacOS/craftos_arm
+	rm -f CraftOS-PC.app/Contents/MacOS/craftos_x86 CraftOS-PC.app/Contents/MacOS/craftos_arm
 	lipo -create -output CraftOS-PC.app/Contents/Frameworks/liblua.dylib craftos2-lua/src/liblua.dylib craftos2-lua/src/liblua-arm64.dylib
 	install_name_tool -add_rpath @executable_path/../Frameworks CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change liblua.dylib "@rpath/liblua.dylib" CraftOS-PC.app/Contents/MacOS/craftos
