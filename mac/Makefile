@@ -128,7 +128,7 @@ $(ODIR)/apis_%_handle.o: $(SDIR)/apis/handles/%_handle.cpp $(SDIR)/apis/handles/
 mac-plugin:
 	echo " [CCLD]  ccemux.bundle"
 	$(CXX) -LCraftOS-PC.app/Contents/Frameworks -std=c++17 -bundle -fpic -o ccemux_x86.bundle examples/ccemux.cpp craftos2-lua/src/liblua.dylib CraftOS-PC.app/Contents/Frameworks/libSDL2.dylib -Ideprebuild -Icraftos2-lua/include -Iapi
-	$(CXX) -LCraftOS-PC.app/Contents/Frameworks -std=c++17 -bundle -fpic -target arm64-apple-macos11 -mmacosx-version-min=11.0 -o ccemux_arm.bundle examples/ccemux.cpp craftos2-lua/src/liblua-arm64.dylib CraftOS-PC.app/Contents/Frameworks/libSDL2.dylib -Ideprebuild -Icraftos2-lua/include -Iapi
+	$(CXX) -LCraftOS-PC.app/Contents/Frameworks -std=c++17 -bundle -fpic -target arm64-apple-macos11 -mmacosx-version-min=11.0 -o ccemux_arm.bundle examples/ccemux.cpp craftos2-lua/src/liblua-arm64.dylib CraftOS-PC.app/Contents/Frameworks/libSDL2.dylib -Iinclude_arm -Ideprebuild -Icraftos2-lua/include -Iapi
 	lipo -create -output ccemux.bundle ccemux_x86.bundle ccemux_arm.bundle
 	rm ccemux_x86.bundle ccemux_arm.bundle
 	install_name_tool -change liblua.dylib "@rpath/liblua.dylib" ccemux.bundle
