@@ -1,6 +1,6 @@
 CC=gcc
 CXX=g++
-CFLAGS= -O2 -g -Wall -mmacosx-version-min=10.9 -fno-stack-check
+CFLAGS= -O2 -g -Wall -mmacosx-version-min=10.15 -fno-stack-check
 CPPFLAGS+= -Icraftos2-luajit/include -I./api -Ideprebuild -DCRAFTOSPC_COMMIT=\"$(shell git rev-parse --short HEAD)\"
 CXXFLAGS+= -std=c++17
 LDFLAGS= -LCraftOS-PC.app/Contents/Frameworks -rdynamic
@@ -37,7 +37,7 @@ _macapp: $(OBJ) $(ODIR)/platform_macapp.o
 	mkdir -p CraftOS-PC.app/Contents/MacOS
 	mkdir -p CraftOS-PC.app/Contents/Resources
 	echo " [LD]    CraftOS-PC.app/Contents/MacOS/craftos"
-	clang++ -LCraftOS-PC.app/Contents/Frameworks $(LDFLAGS) -o CraftOS-PC.app/Contents/MacOS/craftos $^ $(LIBS) -F/Library/Frameworks -framework Foundation -framework AppKit -mmacosx-version-min=10.9
+	clang++ -LCraftOS-PC.app/Contents/Frameworks $(LDFLAGS) -o CraftOS-PC.app/Contents/MacOS/craftos $^ $(LIBS) -F/Library/Frameworks -framework Foundation -framework AppKit -mmacosx-version-min=10.15
 	install_name_tool -add_rpath @executable_path/../Frameworks CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change "@rpath/libPocoNetSSL.71.dylib" "@rpath/libPocoNetSSL.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change "@rpath/libPocoCrypto.71.dylib" "@rpath/libPocoCrypto.dylib" CraftOS-PC.app/Contents/MacOS/craftos
