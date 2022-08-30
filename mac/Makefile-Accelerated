@@ -4,7 +4,7 @@ CFLAGS= -O2 -g -Wall -mmacosx-version-min=10.15 -fno-stack-check
 CPPFLAGS+= -Icraftos2-luajit/include -I./api -Ideprebuild -DCRAFTOSPC_COMMIT=\"$(shell git rev-parse --short HEAD)\"
 CXXFLAGS+= -std=c++17
 LDFLAGS= -LCraftOS-PC.app/Contents/Frameworks -rdynamic
-LIBS=craftos2-luajit/src/libluajit.a libwebp.a libwebpmux.a -lhpdf -lSDL2_mixer -lncurses -lpng -lflac -lmpg123 -lPocoNetSSL -lPocoNet -lPocoCrypto -lPocoJSON -lPocoXML -lPocoUtil -lPocoFoundation -lcrypto -lssl -lSDL2 -framework ApplicationServices
+LIBS=craftos2-luajit/src/libluajit.a -lwebp -lwebpmux -lhpdf -lSDL2_mixer -lncurses -lpng -lflac -lmpg123 -lPocoNetSSL -lPocoNet -lPocoCrypto -lPocoJSON -lPocoXML -lPocoUtil -lPocoFoundation -lcrypto -lssl -lSDL2 -framework ApplicationServices
 PREFIX?=/usr/local
 prefix=$(PREFIX)
 DESTDIR?=${prefix}
