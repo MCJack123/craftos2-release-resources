@@ -14,6 +14,7 @@ elif [ "$1" = "build" ]; then
     cp -Rp $GITHUB_WORKSPACE/craftos2-release-resources/mac/codesign $GITHUB_WORKSPACE/craftos2-release-resources/mac/deprebuild $GITHUB_WORKSPACE/craftos2-release-resources/mac/include_arm .
     if [[ $GITHUB_REF =~ luajit ]]; then
         cp -Rp $GITHUB_WORKSPACE/craftos2-release-resources/mac/Makefile-Accelerated $GITHUB_WORKSPACE/craftos2-release-resources/mac/CraftOS-PC-Accelerated.app .
+        mv Makefile-Accelerated Makefile
         mv CraftOS-PC-Accelerated.app CraftOS-PC.app
         export MACOSX_DEPLOYMENT_TARGET=10.9
     else
