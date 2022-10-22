@@ -16,7 +16,7 @@ elif [ "$1" = "build" ]; then
         cp -Rp $GITHUB_WORKSPACE/craftos2-release-resources/mac/Makefile-Accelerated $GITHUB_WORKSPACE/craftos2-release-resources/mac/CraftOS-PC-Accelerated.app .
         mv Makefile-Accelerated Makefile
         mv CraftOS-PC-Accelerated.app CraftOS-PC.app
-        export MACOSX_DEPLOYMENT_TARGET=10.9
+        export MACOSX_DEPLOYMENT_TARGET=10.15
     else
         cp -Rp $GITHUB_WORKSPACE/craftos2-release-resources/mac/Makefile $GITHUB_WORKSPACE/craftos2-release-resources/mac/CraftOS-PC.app .
         make -C craftos2-lua macosx -j3
