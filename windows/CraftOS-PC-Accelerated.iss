@@ -53,7 +53,7 @@ Name: "syslink"; Description: "Add craftos-luajit.exe to PATH"; GroupDescription
 Type: filesandordirs; Name: "{app}\rom"
 
 [Files]
-Source: "{#WorkspaceDir}\bin\CraftOS-PC.exe"; DestDir: "{app}"; DestName: "CraftOS-PC-Accelerated_console.exe"; Flags: ignoreversion
+Source: "{#WorkspaceDir}\bin\CraftOS-PC.exe"; DestDir: "{app}"; DestName: "CraftOS-PC-Accelerated.exe"; Flags: ignoreversion
 Source: "{#WorkspaceDir}\bin\CraftOS-PC_console.exe"; DestDir: "{app}"; DestName: "CraftOS-PC-Accelerated_console.exe"; Flags: ignoreversion; Tasks: console
 Source: "{#WorkspaceDir}\bin\luajit51.dll"; DestDir: "{app}"
 Source: "{#WorkspaceDir}\craftos2-release-resources\windows\ccemux-luajit.dll"; DestDir: "{app}\plugins"; DestName: "ccemux.dll"; Flags: ignoreversion; Tasks: ccemux
