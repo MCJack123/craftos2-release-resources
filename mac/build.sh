@@ -40,7 +40,11 @@ elif [ "$1" = "sign" ]; then
     curl -LO https://c-command.com/downloads/DropDMG-3.6.5.dmg
     hdiutil attach DropDMG-3.6.5.dmg
     cp -Rp /Volumes/DropDMG-*/DropDMG.app /Applications/
-    mdimport /Applications/DropDMG.app
+    while [ "x$(mdfind kMDItemCFBundleIdentifier = "com.c-command.DropDMG")" = "x" ]; do
+        echo "Waiting for mds to do its job for once..."
+        mdimport /Applications/DropDMG.app
+        sleep 5
+    done
     sqlite3 "/Users/runner/Library/Application Support/com.apple.TCC/TCC.db" "insert into access values ('kTCCServiceAppleEvents', 'com.c-command.DropDMG', 0, 2, 4, 1, NULL, NULL, 0, 'com.apple.finder', NULL, 0, 0)"
     sqlite3 "/Users/runner/Library/Application Support/com.apple.TCC/TCC.db" "insert into access values ('kTCCServiceAppleEvents', '/Applications/DropDMG.app/Contents/Frameworks/DropDMGFramework.framework/Versions/A/dropdmg', 1, 2, 4, 1, NULL, NULL, 0, 'com.c-command.DropDMG', NULL, 0, 0)"
     sqlite3 "/Users/runner/Library/Application Support/com.apple.TCC/TCC.db" "insert into access values ('kTCCServiceAppleEvents', '$SHELL', 1, 2, 4, 1, NULL, NULL, 0, 'com.c-command.DropDMG', NULL, 0, 0)"
