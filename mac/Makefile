@@ -54,6 +54,7 @@ macapp: craftos2-lua/src/liblua.dylib $(OBJ) $(ODIR)/platform_macapp.o
 	install_name_tool -add_rpath @executable_path/../Frameworks CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change liblua.dylib "@rpath/liblua.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change liblua-arm64.dylib "@rpath/liblua.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	# Intel
 	install_name_tool -change "@rpath/libPocoNetSSL.71.dylib" "@rpath/libPocoNetSSL.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change "@rpath/libPocoCrypto.71.dylib" "@rpath/libPocoCrypto.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change "@rpath/libPocoFoundation.71.dylib" "@rpath/libPocoFoundation.dylib" CraftOS-PC.app/Contents/MacOS/craftos
@@ -69,6 +70,23 @@ macapp: craftos2-lua/src/liblua.dylib $(OBJ) $(ODIR)/platform_macapp.o
 	install_name_tool -change /Users/jack/Downloads/CraftOS-PC_src/deprebuild/prefix/lib/libssl.1.1.dylib "@rpath/libssl.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change /Users/jack/Downloads/CraftOS-PC_src/deprebuild/prefix/lib/libhpdf-2.3.0.dylib "@rpath/libhpdf.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change /Users/jack/Downloads/CraftOS-PC_src/deprebuild/prefix/lib/libpng16.16.dylib "@rpath/libpng.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	# Apple Silicon
+	install_name_tool -change /usr/local/opt/libharu/lib/libhpdf-2.3.0.dylib "@rpath/libhpdf.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/libpng/lib/libpng16.16.dylib "@rpath/libpng16.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoNetSSL.71.dylib "@rpath/libPocoNetSSL.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoCrypto.71.dylib "@rpath/libPocoCrypto.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoFoundation.71.dylib "@rpath/libPocoFoundation.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoJSON.71.dylib "@rpath/libPocoJSON.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoNet.71.dylib "@rpath/libPocoNet.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoUtil.71.dylib "@rpath/libPocoUtil.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoXML.71.dylib "@rpath/libPocoXML.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/lib/libSDL2_mixer-2.0.0.dylib "@rpath/libSDL2_mixer.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/sdl2/lib/libSDL2-2.0.0.dylib "@rpath/libSDL2.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/lib/libSDL2-2.0.0.dylib "@rpath/libSDL2.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/flac/lib/libFLAC.8.dylib "@rpath/libFLAC.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/mpg123/lib/libmpg123.0.dylib "@rpath/libmpg123.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/openssl@1.1/lib/libcrypto.1.1.dylib "@rpath/libcrypto.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/openssl@1.1/lib/libssl.1.1.dylib "@rpath/libssl.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	cp resources/Info.plist CraftOS-PC.app/Contents/
 ifneq (,$(wildcard codesign/Makefile))
 	make -C codesign
