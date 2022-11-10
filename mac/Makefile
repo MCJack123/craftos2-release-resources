@@ -72,7 +72,7 @@ macapp: craftos2-lua/src/liblua.dylib $(OBJ) $(ODIR)/platform_macapp.o
 	install_name_tool -change /Users/jack/Downloads/CraftOS-PC_src/deprebuild/prefix/lib/libpng16.16.dylib "@rpath/libpng.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	# Apple Silicon
 	install_name_tool -change /usr/local/opt/libharu/lib/libhpdf-2.3.0.dylib "@rpath/libhpdf.dylib" CraftOS-PC.app/Contents/MacOS/craftos
-	install_name_tool -change /usr/local/opt/libpng/lib/libpng16.16.dylib "@rpath/libpng16.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/libpng/lib/libpng16.16.dylib "@rpath/libpng.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change /usr/local/opt/poco/lib/libPocoNetSSL.71.dylib "@rpath/libPocoNetSSL.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change /usr/local/opt/poco/lib/libPocoCrypto.71.dylib "@rpath/libPocoCrypto.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change /usr/local/opt/poco/lib/libPocoFoundation.71.dylib "@rpath/libPocoFoundation.dylib" CraftOS-PC.app/Contents/MacOS/craftos
