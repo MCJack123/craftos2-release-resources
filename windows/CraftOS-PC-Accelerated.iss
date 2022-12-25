@@ -56,7 +56,7 @@ Type: filesandordirs; Name: "{app}\rom"
 Source: "{#WorkspaceDir}\bin\CraftOS-PC.exe"; DestDir: "{app}"; DestName: "CraftOS-PC-Accelerated.exe"; Flags: ignoreversion
 Source: "{#WorkspaceDir}\bin\CraftOS-PC_console.exe"; DestDir: "{app}"; DestName: "CraftOS-PC-Accelerated_console.exe"; Flags: ignoreversion; Tasks: console
 Source: "{#WorkspaceDir}\bin\luajit51.dll"; DestDir: "{app}"
-Source: "{#WorkspaceDir}\craftos2-release-resources\windows\ccemux-luajit.dll"; DestDir: "{app}\plugins"; DestName: "ccemux.dll"; Flags: ignoreversion; Tasks: ccemux
+Source: "{#WorkspaceDir}\craftos2-release-resources\windows\ccemux-luajit.dll"; DestDir: "{app}\plugins-luajit"; DestName: "ccemux.dll"; Flags: ignoreversion; Tasks: ccemux
 Source: "{#WorkspaceDir}\craftos2-rom\*"; DestDir: "{app}"; Excludes: "\.git,\README.md,.gitattributes,.gitignore,\sounds,\plugins,\.github,\plugins-luajit,\plugins*"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#WorkspaceDir}\craftos2-release-resources\windows\dll\*"; DestDir: "{app}"
 Source: "{#WorkspaceDir}\craftos2-release-resources\windows\vc_redist.x64.exe"; DestDir: "{tmp}"; Flags: deleteafterinstall
