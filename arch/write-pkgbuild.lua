@@ -15,7 +15,7 @@ for line in io.lines(".SRCINFO", "*L") do
     elseif line:match "^%s*sha256sums%s*=" then out:write("\tsha256sums = " .. (sum and luasum or mainsum) .. "\n") sum = true
     elseif line:match "^%s*source%s*=" and not line:match "craftos2%-luajit" then
         local t = source and "-lua" or ""
-        out:write(("\tsource = craftos2%s-%s.tar.gz::https://github.com/MCJack123/craftos2%s/archive/v%s.tar.gz\n"):format(t, version, t, version))
+        out:write(("\tsource = craftos2%s-%s.tar.gz::https://github.com/MCJack123/craftos2%s/archive/v%s.tar.gz\n"):format(t, version, t, version .. (line:match "%-luajit" or "")))
         source = true
     else out:write(line) end
 end
