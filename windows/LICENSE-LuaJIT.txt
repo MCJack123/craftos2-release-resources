@@ -180,7 +180,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-This product includes libFLAC, libvorbis, libogg, and PCRE2, which are licensed under the BSD license.
+This product includes libogg and PCRE2, which are licensed under the BSD license.
 
 Copyright (C) 2000-2009  Josh Coalson
 Copyright (C) 2011-2016  Xiph.Org Foundation
@@ -334,7 +334,7 @@ OpenSSL/SSLeay licenses.
  * [including the GNU Public Licence.]
  */
 
-This product includes libmpg123, fluidsynth, GLib, libiconv, libcharset, and libintl, which are licensed under the Lesser GNU Public License v2.1.
+This product includes fluidsynth, GLib, libiconv, libcharset, and libintl, which are licensed under the Lesser GNU Public License v2.1.
 
   GNU LESSER GENERAL PUBLIC LICENSE
        Version 2.1, February 1999
