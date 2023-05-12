@@ -14,8 +14,9 @@ for line in io.lines(".SRCINFO", "*L") do
     elseif line:match "^%s*pkgrel%s*=" then out:write("\tpkgrel = 1\n")
     elseif line:match "^%s*sha256sums%s*=" then out:write("\tsha256sums = " .. (sum and imgsum or mainsum) .. "\n") sum = true
     elseif line:match "^%s*source%s*=" then
-        if source then out:write(("\tsource = CraftOS-PC_%s.AppImage::https://github.com/MCJack123/craftos2/releases/download/v%s/CraftOS-PC.x86_64.AppImage"):format(version, version .. (line:match "%-luajit" or "")))
-        else out:write(("\tsource = craftos2-%s.tar.gz::https://github.com/MCJack123/craftos2/archive/v%s.tar.gz\n"):format(version, version .. (line:match "%-luajit" or ""))) end
+        local v = version .. (line:match "%-luajit" or "")
+        if source then out:write(("\tsource = CraftOS-PC_%s.AppImage::https://github.com/MCJack123/craftos2/releases/download/v%s/CraftOS-PC.x86_64.AppImage"):format(v, v))
+        else out:write(("\tsource = craftos2-%s.tar.gz::https://github.com/MCJack123/craftos2/archive/v%s.tar.gz\n"):format(v, v)) end
         source = true
     else out:write(line) end
 end
