@@ -1,5 +1,5 @@
 #!/bin/zsh
-RELEASES=(focal jammy kinetic)
+RELEASES=(focal jammy kinetic lunar)
 VERSION=`grep -o "[0-9\.~\+]*-${RELEASES[1]}[0-9][0-9]*" debian/changelog | head -n 1 | sed 's/-.*//'`
 DEBVER=`grep -o "[0-9\.~\+]*-${RELEASES[1]}[0-9][0-9]*" debian/changelog | head -n 1 | sed 's/^.*-[^0-9]*//'`
 echo Building and uploading CraftOS-PC Accelerated v`echo $VERSION | sed "s/${RELEASES[1]}//"`...
