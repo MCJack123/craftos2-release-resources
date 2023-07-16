@@ -19,7 +19,8 @@ Description: Advanced ComputerCraft emulator, using the LuaJIT engine
 
 Package: craftos-pc-accelerated-ccemux
 Architecture: i386 amd64 armel armhf arm64 mips
-Breaks: craftos-pc-ccemux
+Enhances: craftos-pc-accelerated
+Breaks: craftos-pc-accelerated (<< 2.6)
 Depends: ${shlibs:Depends}, ${misc:Depends}, craftos-pc-accelerated (>= 2.5), libsdl2-2.0-0
 Description: CCEmuX plugin for CraftOS-PC
  Compatibility plugin for CraftOS-PC that allows using the CCEmuX API in CraftOS-PC.
