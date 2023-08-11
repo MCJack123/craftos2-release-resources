@@ -1,10 +1,13 @@
-CC=gcc
-CXX=g++
-CFLAGS= -O2 -g -Wall -mmacosx-version-min=10.15 -fno-stack-check
-CPPFLAGS+= -Icraftos2-luajit/include -I./api -Ideprebuild -DCRAFTOSPC_COMMIT=\"$(shell git rev-parse --short HEAD)\"
+CC=clang
+CXX=clang++
+ifneq (-target arm64-apple-macos11 -mmacosx-version-min=11.0,$(CFLAGS))
+CFLAGS+=-mmacosx-version-min=10.15
+endif
+CFLAGS+= -g -O2 -Wall
+CPPFLAGS+= -Icraftos2-luajit/include -Iapi -Ideprebuild -I/usr/local/opt/openssl/include -DCRAFTOSPC_COMMIT=\"$(shell git rev-parse --short HEAD)\"
 CXXFLAGS+= -std=c++17
 LDFLAGS= -LCraftOS-PC.app/Contents/Frameworks -rdynamic
-LIBS=craftos2-luajit/src/libluajit.a -lwebp -lwebpmux -lhpdf -lSDL2_mixer -lncurses -lpng -lflac -lmpg123 -lPocoNetSSL -lPocoNet -lPocoCrypto -lPocoJSON -lPocoXML -lPocoUtil -lPocoFoundation -lcrypto -lssl -lSDL2 -framework ApplicationServices -framework Security
+LIBS=libluajit.dylib -lhpdf -lSDL2_mixer -lncurses -lpng -lwebp -lwebpmux -lflac -lmpg123 -lPocoNetSSL -lPocoNet -lPocoCrypto -lPocoJSON -lPocoXML -lPocoUtil -lPocoFoundation -lcrypto -lssl -lSDL2 -framework ApplicationServices -framework Security
 PREFIX?=/usr/local
 prefix=$(PREFIX)
 DESTDIR?=${prefix}
@@ -13,32 +16,61 @@ CPPFLAGS:=$(CPPFLAGS) -DCUSTOM_ROM_DIR=\"$(PREFIX)/share/craftos\"
 endif
 SDIR=./src
 IDIR=./api
-ODIR=obj
+ODIR?=obj
 _OBJ=Computer.o configuration.o favicon.o font.o gif.o main.o plugin.o runtime.o speaker_sounds.o termsupport.o util.o \
 	 apis_config.o apis_fs.o apis_fs_handle.o apis_http.o apis_http_handle.o apis_mounter.o apis_os.o apis_periphemu.o apis_peripheral.o apis_redstone.o apis_term.o \
 	 peripheral_monitor.o peripheral_printer.o peripheral_computer.o peripheral_modem.o peripheral_drive.o peripheral_debugger.o \
 	 peripheral_debug_adapter.o peripheral_speaker.o peripheral_chest.o peripheral_energy.o peripheral_tank.o \
 	 terminal_SDLTerminal.o terminal_CLITerminal.o terminal_RawTerminal.o terminal_TRoRTerminal.o terminal_HardwareSDLTerminal.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
+ifndef OS
+ifeq ($(shell uname), Darwin)
+CFLAGS+= -fno-stack-check
+LDFLAGS+= -Wl,-pagezero_size 10000 -Wl,-image_base,0x488800000000
+LIBEXT=.dylib
+endif
+endif
+MACOSX_DEPLOYMENT_TARGET=10.15
+export MACOSX_DEPLOYMENT_TARGET
 
-all: $(ODIR) luajit craftos
+all: $(ODIR) craftos
 
-luajit:
+craftos2-luajit:
 	git submodule update --init --recursive
-	make -C craftos2-luajit
 
-craftos: $(OBJ) $(ODIR)/platform.o
+libluajit.dylib: craftos2-luajit
+	$(MAKE) -C craftos2-luajit clean
+	$(MAKE) -C craftos2-luajit
+	cp craftos2-luajit/src/libluajit-craftos.dylib libluajit.dylib
+
+libluajit-arm64.dylib: craftos2-luajit
+	MACOSX_DEPLOYMENT_TARGET=11.0
+	$(MAKE) -C craftos2-luajit clean
+	HOST_CFLAGS="-target x86_64-apple-macos10.15 -Wno-overriding-t-option" HOST_LDFLAGS="-target x86_64-apple-macos10.15" LDFLAGS="-target arm64-apple-macos11 -Wl,-image_base,0x488800000000" $(MAKE) -C craftos2-luajit
+	cp craftos2-luajit/src/libluajit-craftos.dylib libluajit-arm64.dylib
+
+_craftos_arm_app: libluajit-arm64.dylib $(OBJ) $(ODIR)/platform_macapp.o
+	echo " [LD]    CraftOS-PC.app/Contents/MacOS/craftos_arm"
+	clang++ -Linclude_arm -LCraftOS-PC.app/Contents/Frameworks -rdynamic -o CraftOS-PC.app/Contents/MacOS/craftos_arm $^ $(LIBS) -F/Library/Frameworks -framework Foundation -framework AppKit -mmacosx-version-min=11.0 -target arm64-apple-macos11
+
+craftos: libluajit.dylib $(OBJ) $(ODIR)/platform.o
 	echo " [LD]    $@"
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 
-macapp: luajit _macapp
-
-_macapp: $(OBJ) $(ODIR)/platform_macapp.o
+macapp: libluajit.dylib $(OBJ) $(ODIR)/platform_macapp.o
 	mkdir -p CraftOS-PC.app/Contents/MacOS
 	mkdir -p CraftOS-PC.app/Contents/Resources
-	echo " [LD]    CraftOS-PC.app/Contents/MacOS/craftos"
-	clang++ -LCraftOS-PC.app/Contents/Frameworks $(LDFLAGS) -o CraftOS-PC.app/Contents/MacOS/craftos $^ $(LIBS) -F/Library/Frameworks -framework Foundation -framework AppKit -mmacosx-version-min=10.15
+	CFLAGS="-target arm64-apple-macos11 -mmacosx-version-min=11.0" CPPFLAGS="-Iinclude_arm" ODIR=obj_arm SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk make _craftos_arm_app
+	echo " [LD]    CraftOS-PC.app/Contents/MacOS/craftos_x86"
+	clang++ -Linclude_arm -LCraftOS-PC.app/Contents/Frameworks -rdynamic -o CraftOS-PC.app/Contents/MacOS/craftos_x86 $^ $(LIBS) -F/Library/Frameworks -framework Foundation -framework AppKit -mmacosx-version-min=10.15 -target x86_64-apple-macos10.15
+	echo " [LIPO]  CraftOS-PC.app/Contents/MacOS/craftos"
+	rm -f CraftOS-PC.app/Contents/MacOS/craftos
+	lipo -create -output CraftOS-PC.app/Contents/MacOS/craftos CraftOS-PC.app/Contents/MacOS/craftos_x86 CraftOS-PC.app/Contents/MacOS/craftos_arm
+	rm -f CraftOS-PC.app/Contents/MacOS/craftos_x86 CraftOS-PC.app/Contents/MacOS/craftos_arm
+	lipo -create -output CraftOS-PC.app/Contents/Frameworks/libluajit.dylib libluajit.dylib libluajit-arm64.dylib
 	install_name_tool -add_rpath @executable_path/../Frameworks CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/lib/libluajit-craftos-5.1.2.dylib @rpath/libluajit.dylib CraftOS-PC.app/Contents/MacOS/craftos
+	# Intel
 	install_name_tool -change "@rpath/libPocoNetSSL.71.dylib" "@rpath/libPocoNetSSL.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change "@rpath/libPocoCrypto.71.dylib" "@rpath/libPocoCrypto.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change "@rpath/libPocoFoundation.71.dylib" "@rpath/libPocoFoundation.dylib" CraftOS-PC.app/Contents/MacOS/craftos
@@ -54,6 +86,23 @@ _macapp: $(OBJ) $(ODIR)/platform_macapp.o
 	install_name_tool -change /Users/jack/Downloads/CraftOS-PC_src/deprebuild/prefix/lib/libssl.1.1.dylib "@rpath/libssl.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change /Users/jack/Downloads/CraftOS-PC_src/deprebuild/prefix/lib/libhpdf-2.3.0.dylib "@rpath/libhpdf.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	install_name_tool -change /Users/jack/Downloads/CraftOS-PC_src/deprebuild/prefix/lib/libpng16.16.dylib "@rpath/libpng.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	# Apple Silicon
+	install_name_tool -change /usr/local/opt/libharu/lib/libhpdf-2.3.0.dylib "@rpath/libhpdf.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/libpng/lib/libpng16.16.dylib "@rpath/libpng.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoNetSSL.71.dylib "@rpath/libPocoNetSSL.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoCrypto.71.dylib "@rpath/libPocoCrypto.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoFoundation.71.dylib "@rpath/libPocoFoundation.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoJSON.71.dylib "@rpath/libPocoJSON.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoNet.71.dylib "@rpath/libPocoNet.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoUtil.71.dylib "@rpath/libPocoUtil.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/poco/lib/libPocoXML.71.dylib "@rpath/libPocoXML.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/lib/libSDL2_mixer-2.0.0.dylib "@rpath/libSDL2_mixer.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/sdl2/lib/libSDL2-2.0.0.dylib "@rpath/libSDL2.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/lib/libSDL2-2.0.0.dylib "@rpath/libSDL2.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/flac/lib/libFLAC.8.dylib "@rpath/libFLAC.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/mpg123/lib/libmpg123.0.dylib "@rpath/libmpg123.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/openssl@1.1/lib/libcrypto.1.1.dylib "@rpath/libcrypto.dylib" CraftOS-PC.app/Contents/MacOS/craftos
+	install_name_tool -change /usr/local/opt/openssl@1.1/lib/libssl.1.1.dylib "@rpath/libssl.dylib" CraftOS-PC.app/Contents/MacOS/craftos
 	cp resources/Info.plist CraftOS-PC.app/Contents/
 ifneq (,$(wildcard codesign/Makefile))
 	make -C codesign
@@ -111,13 +160,17 @@ $(ODIR)/apis_%_handle.o: $(SDIR)/apis/handles/%_handle.cpp $(SDIR)/apis/handles/
 	$(CXX) -o $@ -c $(CPPFLAGS) $(CXXFLAGS) $(CFLAGS) $<
 
 mac-plugin:
-	echo " [CXLD]  ccemux.bundle"
-	$(CXX) -std=c++17 -bundle -fpic -o ccemux.bundle examples/ccemux.cpp craftos2-luajit/src/libluajit.a -LCraftOS-PC.app/Contents/Frameworks -lSDL2 -Icraftos2-luajit/include -Iapi -Ideprebuild
+	echo " [CCLD]  ccemux.bundle"
+	$(CXX) -LCraftOS-PC.app/Contents/Frameworks -std=c++17 -bundle -fpic -o ccemux_x86.bundle examples/ccemux.cpp CraftOS-PC.app/Contents/Frameworks/libluajit.dylib CraftOS-PC.app/Contents/Frameworks/libSDL2.dylib -Ideprebuild -Icraftos2-lua/include -Iapi
+	$(CXX) -LCraftOS-PC.app/Contents/Frameworks -std=c++17 -bundle -fpic -target arm64-apple-macos11 -mmacosx-version-min=11.0 -o ccemux_arm.bundle examples/ccemux.cpp CraftOS-PC.app/Contents/Frameworks/libluajit.dylib CraftOS-PC.app/Contents/Frameworks/libSDL2.dylib -Iinclude_arm -Ideprebuild -Icraftos2-lua/include -Iapi
+	lipo -create -output ccemux.bundle ccemux_x86.bundle ccemux_arm.bundle
+	rm ccemux_x86.bundle ccemux_arm.bundle
+	install_name_tool -change /usr/local/lib/libluajit-craftos-5.1.2.dylib @rpath/libluajit.dylib ccemux.bundle
 	install_name_tool -change CraftOS-PC.app/Contents/Frameworks/libSDL2.dylib "@rpath/libSDL2.dylib" ccemux.bundle
 
 linux-plugin:
-	echo " [CXLD]  ccemux.so"
-	$(CXX) -std=c++17 -shared -fPIC -o ccemux.so examples/ccemux.cpp craftos2-luajit/src/libluajit.a -lSDL2 -Icraftos2-luajit/include
+	echo " [LD]    ccemux.so"
+	$(CXX) -std=c++17 -shared -fPIC -o ccemux.so examples/ccemux.cpp libluajit.dylib -lSDL2 -Icraftos2-luajit/include -Iapi
 
 clean: $(ODIR)
 	rm -f craftos
@@ -129,7 +182,11 @@ install: craftos
 	echo " [CP]    $(DESTDIR)/craftos"
 	cp craftos $(DESTDIR)/craftos
 
+uninstall:
+	echo " [RM]    $(DESTDIR)/craftos"
+	rm $(DESTDIR)/craftos
+
 test: craftos
-	./craftos --headless --script $(shell pwd)/resources/CraftOSTest.lua
+	./craftos --headless --script $(shell pwd)/resources/CraftOSTest.lua -d "$(shell mktemp -d)"
 
 .SILENT:
