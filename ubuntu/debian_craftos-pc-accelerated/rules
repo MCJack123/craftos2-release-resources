@@ -11,7 +11,7 @@ override_dh_auto_install:
 	install -D -m 0755 craftos $$(pwd)/debian/craftos-pc-accelerated/usr/bin/craftos-luajit
 	install -D -m 0755 craftos2-luajit/src/libluajit-craftos.so $$(pwd)/debian/craftos-pc-accelerated/usr/lib/libluajit-craftos.so
 	install -D -m 0755 ccemux.so $$(pwd)/debian/craftos-pc-accelerated-ccemux/usr/share/craftos/plugins-luajit/ccemux.so
-	patchelf --replace-needed craftos2-lua/src/liblua.so libcraftos2-lua.so $$(pwd)/debian/craftos-pc-accelerated/usr/bin/craftos
+	patchelf --replace-needed craftos2-lua/src/liblua.so libcraftos2-lua.so $$(pwd)/debian/craftos-pc-accelerated/usr/bin/craftos-luajit
 	patchelf --replace-needed craftos2-lua/src/liblua.so libcraftos2-lua.so $$(pwd)/debian/craftos-pc-accelerated-ccemux/usr/share/craftos/plugins/ccemux.so
 	mkdir icons
 	unzip resources/linux-icons.zip -d icons
