@@ -1,24 +1,8 @@
 #!/usr/bin/make -f
-# Install patchelf 0.10+ manually (not available on bionic)
-ARCH=$(shell dpkg --print-architecture)
-ifeq ($(ARCH), amd64)
-URL=http://archive.ubuntu.com/ubuntu/pool/universe/p/patchelf/patchelf_0.10-2build1_amd64.deb
-else
-ifeq ($(ARCH), i386)
-URL=http://archive.ubuntu.com/ubuntu/pool/universe/p/patchelf/patchelf_0.10-2build1_amd64.deb
-else
-URL=http://ports.ubuntu.com/pool/universe/p/patchelf/patchelf_0.10-2build1_$(ARCH).deb
-endif
-endif
-
 %:
 	dh $@
 
 override_dh_auto_build:
-	curl -sLo patchelf.deb $(URL)
-	ar x patchelf.deb
-	tar -xf data.tar.xz
-	rm patchelf.deb control.tar.xz data.tar.xz debian-binary
 	make -C craftos2-lua linux
 	make
 	make linux-plugin
@@ -27,8 +11,8 @@ override_dh_auto_install:
 	install -D -m 0755 craftos $$(pwd)/debian/craftos-pc/usr/bin/craftos
 	install -D -m 0755 craftos2-lua/src/liblua.so $$(pwd)/debian/craftos-pc/usr/lib/libcraftos2-lua.so
 	install -D -m 0755 ccemux.so $$(pwd)/debian/craftos-pc-ccemux/usr/share/craftos/plugins/ccemux.so
-	usr/bin/patchelf --replace-needed craftos2-lua/src/liblua.so libcraftos2-lua.so $$(pwd)/debian/craftos-pc/usr/bin/craftos
-	usr/bin/patchelf --replace-needed craftos2-lua/src/liblua.so libcraftos2-lua.so $$(pwd)/debian/craftos-pc-ccemux/usr/share/craftos/plugins/ccemux.so
+	patchelf --replace-needed craftos2-lua/src/liblua.so libcraftos2-lua.so $$(pwd)/debian/craftos-pc/usr/bin/craftos
+	patchelf --replace-needed craftos2-lua/src/liblua.so libcraftos2-lua.so $$(pwd)/debian/craftos-pc-ccemux/usr/share/craftos/plugins/ccemux.so
 	mkdir icons
 	unzip resources/linux-icons.zip -d icons
 	install -D -m 0644 icons/CraftOS-PC.desktop $$(pwd)/debian/craftos-pc/usr/share/applications/CraftOSPC.desktop
