@@ -2,7 +2,7 @@ Source: craftos-pc
 Section: interpreters
 Priority: optional
 Maintainer: JackMacWindows <jackmacwindowslinux@gmail.com>
-Build-Depends: debhelper (>= 10), unzip, libsdl2-dev (>= 2.0.5), libsdl2-mixer-dev, libpoco-dev, libhpdf-dev, libpng++-dev (>= 0.2.7), libwebp-dev, libncurses5-dev, craftos-pc-data (>= 2.5), curl
+Build-Depends: debhelper (>= 10), unzip, libsdl2-dev (>= 2.0.5), libsdl2-mixer-dev, libpoco-dev, libhpdf-dev, libpng++-dev (>= 0.2.7), libwebp-dev, libncurses5-dev, craftos-pc-data (>= 2.5), curl, patchelf (>= 0.10)
 Standards-Version: 4.1.2
 Homepage: https://www.craftos-pc.cc
 Vcs-Git: https://github.com/MCJack123/craftos2.git
