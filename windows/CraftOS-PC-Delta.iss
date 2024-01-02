@@ -58,7 +58,7 @@ Type: filesandordirs; Name: "{app}\rom"
 [Files]
 Source: "{#WorkspaceDir}\bin\CraftOS-PC.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#WorkspaceDir}\bin\CraftOS-PC_console.exe"; DestDir: "{app}"; DestName: "CraftOS-PC_console.exe"; Flags: ignoreversion; Tasks: console
-Source: "{#WorkspaceDir}\bin\lua51.dll"; DestDir: "{app}"
+Source: "{#WorkspaceDir}\bin\lua52.dll"; DestDir: "{app}"
 Source: "{#WorkspaceDir}\craftos2-rom\*"; DestDir: "{app}"; Excludes: "\.git,\README.md,.gitattributes,.gitignore,\sounds,\plugins,\.github,\plugins-luajit,\plugins*"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
