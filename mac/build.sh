@@ -22,7 +22,7 @@ elif [ "$1" = "build" ]; then
         make -C craftos2-lua macosx -j3
         rm craftos2-lua/src/*.o
         sed 's/PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris/PLATS= aix ansi bsd freebsd generic linux macosx macosx-arm emscripten mingw posix solaris/' craftos2-lua/Makefile > m
-        mv m > craftos2-lua/Makefile
+        mv m craftos2-lua/Makefile
         make -C craftos2-lua macosx-arm -j3
     fi
     mkdir obj obj_arm
