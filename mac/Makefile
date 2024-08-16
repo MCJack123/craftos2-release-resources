@@ -3,6 +3,7 @@ CXX=clang++
 ifneq (-target arm64-apple-macos11 -mmacosx-version-min=11.0,$(CFLAGS))
 CFLAGS+=-mmacosx-version-min=10.15
 endif
+CFLAGS?= -target x86_64-apple-macos10.15
 CFLAGS+= -g -O2 -Wall
 CPPFLAGS+= -Icraftos2-lua/include -Iapi -Ideprebuild -I/usr/local/opt/openssl/include -DCRAFTOSPC_COMMIT=\"$(shell git rev-parse --short HEAD)\"
 CXXFLAGS+= -std=c++17
