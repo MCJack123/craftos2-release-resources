@@ -19,7 +19,7 @@ elif [ "$1" = "build" ]; then
         export MACOSX_DEPLOYMENT_TARGET=10.15
     else
         cp -Rp $GITHUB_WORKSPACE/craftos2-release-resources/mac/Makefile $GITHUB_WORKSPACE/craftos2-release-resources/mac/CraftOS-PC.app .
-        make -C craftos2-lua macosx -j3
+        make -C craftos2-lua/src all SYSCFLAGS="-DLUA_USE_MACOSX -mmacosx-version-min=10.15 -target x86_64-apple-macos10.15" SYSLIBS="-lreadline" CC=cc LUA_D="liblua.dylib" DYLD="$(CXX) -target x86_64-apple-macos10.15 -dynamiclib -fPIC"
         rm craftos2-lua/src/*.o
         make -C craftos2-lua macosx-arm -j3
     fi
