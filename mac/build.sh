@@ -24,7 +24,7 @@ elif [ "$1" = "build" ]; then
         make -C craftos2-lua macosx-arm -j3
     fi
     mkdir obj obj_arm
-    make macapp -j3
+    CFLAGS="-target x86_64-apple-macos10.15" make macapp -j3
     make mac-plugin
     codesign -fs "Developer ID Application: Jack Bruienne (396R3XAD4M)" --timestamp --options runtime --deep ccemux.bundle
 elif [ "$1" = "sign" ]; then
