@@ -4,10 +4,10 @@ ifneq (-target arm64-apple-macos11 -mmacosx-version-min=11.0,$(CFLAGS))
 CFLAGS+=-mmacosx-version-min=10.15
 endif
 CFLAGS+= -g -O2 -Wall
-CPPFLAGS+= -Icraftos2-lua/include -Iapi -Ideprebuild -I/usr/local/opt/openssl/include -DCRAFTOSPC_COMMIT=\"$(shell git rev-parse --short HEAD)\"
+CPPFLAGS+= -Icraftos2-lua/include -Iapi -Ideprebuild -I/usr/local/opt/openssl/include -DCRAFTOSPC_COMMIT=\"$(shell git rev-parse --short HEAD)\" -DNO_WEBP
 CXXFLAGS+= -std=c++17
 LDFLAGS= -LCraftOS-PC.app/Contents/Frameworks -rdynamic
-LIBS=craftos2-lua/src/liblua.dylib -lhpdf -lSDL2_mixer -lncurses -lpng -lwebp -lwebpmux -lflac -lmpg123 -lPocoNetSSL -lPocoNet -lPocoCrypto -lPocoJSON -lPocoXML -lPocoUtil -lPocoFoundation -lcrypto -lssl -lSDL2 -framework ApplicationServices -framework Security
+LIBS=craftos2-lua/src/liblua.dylib -lhpdf -lSDL2_mixer -lncurses -lpng -lflac -lmpg123 -lPocoNetSSL -lPocoNet -lPocoCrypto -lPocoJSON -lPocoXML -lPocoUtil -lPocoFoundation -lcrypto -lssl -lSDL2 -framework ApplicationServices -framework Security
 PREFIX?=/usr/local
 prefix=$(PREFIX)
 DESTDIR?=${prefix}
