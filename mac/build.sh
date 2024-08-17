@@ -45,7 +45,7 @@ elif [ "$1" = "sign" ]; then
         mdimport /Applications/DropDMG.app
         sleep 5
     done
-    automationmodetool enable-automationmode-without-authentication
+    sudo automationmodetool enable-automationmode-without-authentication
     #sqlite3 "/Users/runner/Library/Application Support/com.apple.TCC/TCC.db" "insert into access values ('kTCCServiceAppleEvents', 'com.c-command.DropDMG', 0, 2, 4, 1, NULL, NULL, 0, 'com.apple.finder', NULL, 0, 0)"
     #sqlite3 "/Users/runner/Library/Application Support/com.apple.TCC/TCC.db" "insert into access values ('kTCCServiceAppleEvents', '/Applications/DropDMG.app/Contents/Frameworks/DropDMGFramework.framework/Versions/A/dropdmg', 1, 2, 4, 1, NULL, NULL, 0, 'com.c-command.DropDMG', NULL, 0, 0)"
     #sqlite3 "/Users/runner/Library/Application Support/com.apple.TCC/TCC.db" "insert into access values ('kTCCServiceAppleEvents', '$SHELL', 1, 2, 4, 1, NULL, NULL, 0, 'com.c-command.DropDMG', NULL, 0, 0)"
