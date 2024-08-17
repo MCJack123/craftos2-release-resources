@@ -37,20 +37,21 @@ elif [ "$1" = "sign" ]; then
     if [[ $GITHUB_REF =~ luajit ]]; then
         mv CraftOS-PC/CraftOS-PC.app CraftOS-PC/CraftOS-PC\ Accelerated.app
     fi
-    curl -LO https://c-command.com/downloads/DropDMG-3.6.5.dmg
-    hdiutil attach DropDMG-3.6.5.dmg
-    cp -Rp /Volumes/DropDMG-*/DropDMG.app /Applications/
-    while [ "x$(mdfind kMDItemCFBundleIdentifier = "com.c-command.DropDMG")" = "x" ]; do
-        echo "Waiting for mds to do its job for once..."
-        mdimport /Applications/DropDMG.app
-        sleep 5
-    done
-    sudo automationmodetool enable-automationmode-without-authentication
+    #curl -LO https://c-command.com/downloads/DropDMG-3.6.5.dmg
+    #hdiutil attach DropDMG-3.6.5.dmg
+    #cp -Rp /Volumes/DropDMG-*/DropDMG.app /Applications/
+    #while [ "x$(mdfind kMDItemCFBundleIdentifier = "com.c-command.DropDMG")" = "x" ]; do
+    #    echo "Waiting for mds to do its job for once..."
+    #    mdimport /Applications/DropDMG.app
+    #    sleep 5
+    #done
+    #sudo automationmodetool enable-automationmode-without-authentication
     #sqlite3 "/Users/runner/Library/Application Support/com.apple.TCC/TCC.db" "insert into access values ('kTCCServiceAppleEvents', 'com.c-command.DropDMG', 0, 2, 4, 1, NULL, NULL, 0, 'com.apple.finder', NULL, 0, 0)"
     #sqlite3 "/Users/runner/Library/Application Support/com.apple.TCC/TCC.db" "insert into access values ('kTCCServiceAppleEvents', '/Applications/DropDMG.app/Contents/Frameworks/DropDMGFramework.framework/Versions/A/dropdmg', 1, 2, 4, 1, NULL, NULL, 0, 'com.c-command.DropDMG', NULL, 0, 0)"
     #sqlite3 "/Users/runner/Library/Application Support/com.apple.TCC/TCC.db" "insert into access values ('kTCCServiceAppleEvents', '$SHELL', 1, 2, 4, 1, NULL, NULL, 0, 'com.c-command.DropDMG', NULL, 0, 0)"
     #sqlite3 "/Users/runner/Library/Application Support/com.apple.TCC/TCC.db" "insert into access values ('kTCCServiceAppleEvents', '/usr/bin/osascript', 1, 2, 4, 1, NULL, NULL, 0, 'com.c-command.DropDMG', NULL, 0, 0)"
-    /Applications/DropDMG.app/Contents/Frameworks/DropDMGFramework.framework/Versions/A/dropdmg --layout-folder $GITHUB_WORKSPACE/craftos2-release-resources/mac/layout -f bzip2 -n CraftOS-PC
+    #/Applications/DropDMG.app/Contents/Frameworks/DropDMGFramework.framework/Versions/A/dropdmg --layout-folder $GITHUB_WORKSPACE/craftos2-release-resources/mac/layout -f bzip2 -n CraftOS-PC
+    hdiutil create -srcfolder CraftOS-PC -volname CraftOS-PC CraftOS-PC.dmg
     xcrun notarytool submit -k APIKey.p8 -d C3VGHY9QZ3 -i 88c37dac-bd0f-4adc-9e79-a24745e2e292 --wait CraftOS-PC.dmg
     xcrun stapler staple CraftOS-PC.dmg
 fi
