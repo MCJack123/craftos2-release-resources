@@ -8,7 +8,7 @@ if [ "$1" = "setup" ]; then
     security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k actionrunner build.keychain
     security set-keychain-settings -lut 900
     echo "$NOTARIZATION_CERTIFICATE" | base64 -d > APIKey.p8
-    brew install coreutils
+    brew install coreutils webp
 elif [ "$1" = "build" ]; then
     git submodule update --init --recursive
     cp -Rp $GITHUB_WORKSPACE/craftos2-release-resources/mac/codesign $GITHUB_WORKSPACE/craftos2-release-resources/mac/deprebuild $GITHUB_WORKSPACE/craftos2-release-resources/mac/include_arm .
