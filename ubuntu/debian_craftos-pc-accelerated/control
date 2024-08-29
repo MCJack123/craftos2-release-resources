@@ -10,7 +10,7 @@ Vcs-Browser: https://github.com/MCJack123/craftos2
 
 Package: craftos-pc-accelerated
 Architecture: i386 amd64 armel armhf arm64 mips
-Depends: ${shlibs:Depends}, ${misc:Depends}, libsdl2-2.0-0, libsdl2-mixer-2.0-0, libpoco-dev, libhpdf-2.3.0, libpng16-16, libwebp-dev, libwebpmux3, libncurses5, craftos-pc-data (>= 2.5)
+Depends: ${shlibs:Depends}, ${misc:Depends}, craftos-pc-data (>= 2.5)
 Description: Advanced ComputerCraft emulator, using the LuaJIT engine
  CraftOS-PC is the fastest emulator for the ComputerCraft mod for Minecraft.
  It implements the CraftOS API in C++, with ~95% compatibility.
@@ -21,6 +21,6 @@ Package: craftos-pc-accelerated-ccemux
 Architecture: i386 amd64 armel armhf arm64 mips
 Enhances: craftos-pc-accelerated
 Breaks: craftos-pc-accelerated (<< 2.6)
-Depends: ${shlibs:Depends}, ${misc:Depends}, craftos-pc-accelerated (>= 2.5), libsdl2-2.0-0
+Depends: ${shlibs:Depends}, ${misc:Depends}, craftos-pc-accelerated (>= 2.5)
 Description: CCEmuX plugin for CraftOS-PC
  Compatibility plugin for CraftOS-PC that allows using the CCEmuX API in CraftOS-PC.
