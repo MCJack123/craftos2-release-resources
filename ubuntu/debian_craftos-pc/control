@@ -10,7 +10,7 @@ Vcs-Browser: https://github.com/MCJack123/craftos2
 
 Package: craftos-pc
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libsdl2-2.0-0, libsdl2-mixer-2.0-0, libpoco-dev, libhpdf-2.3.0, libpng16-16, libwebp-dev, libwebpmux3, libncurses5, craftos-pc-data (>= 2.5)
+Depends: ${shlibs:Depends}, ${misc:Depends}, craftos-pc-data (>= 2.5)
 Breaks: craftos-pc-ccemux (<< 2.5)
 Description: Advanced ComputerCraft emulator
  CraftOS-PC is the fastest emulator for the ComputerCraft mod for Minecraft.
@@ -20,7 +20,7 @@ Description: Advanced ComputerCraft emulator
 
 Package: craftos-pc-ccemux
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, craftos-pc (>= 2.6), libsdl2-2.0-0
+Depends: ${shlibs:Depends}, ${misc:Depends}, craftos-pc (>= 2.6)
 Enhances: craftos-pc
 Breaks: craftos-pc (<< 2.6)
 Description: CCEmuX plugin for CraftOS-PC
