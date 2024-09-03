@@ -8,9 +8,6 @@ override_dh_auto_build:
 	make linux-plugin
 
 override_dh_auto_install:
-	make install extra-install-linux-plugin
-	install -D -m 0644 apport_hook.py $$(pwd)/debian/craftos-pc/usr/share/apport/package-hooks/craftos-pc.py
-	install -D -m 0644 apport_hook.py $$(pwd)/debian/craftos-pc/usr/share/apport/package-hooks/source_craftos-pc.py
-	install -D -m 0644 apport_crashdb.conf $$(pwd)/debian/craftos-pc/etc/apport/crashdb.conf.d/craftos_pc-crashdb.conf
+	make install extra-install-linux-plugin extra-install-apport
 
 override_dh_auto_test:
