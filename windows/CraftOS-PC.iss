@@ -161,6 +161,10 @@ const
 
   VC_2022_REDIST_X64_ADD = '{F4499EE3-A166-496C-81BB-51D1BCDC70A9}';
 
+  { Visual C++ 2022 Redistributable 14.40.33810 }
+  VC_2022_UPD_REDIST_X64_MIN = '{B8B3BB4A-A10D-4F51-91B7-A64FFAC31EA7}'
+  VC_2022_UPD_REDIST_X64_ADD = '{59CED48F-EBFE-480C-8A38-FC079C2BEC0F}'
+
 function MsiQueryProductState(szProduct: string): INSTALLSTATE; 
   external 'MsiQueryProductState{#AW}@msi.dll stdcall';
 
@@ -176,7 +180,7 @@ begin
   { this statement, the following won't install your VC redist only when }
   { the Visual C++ 2010 Redist (x86) and Visual C++ 2010 SP1 Redist(x86) }
   { are installed for the current user }
-  Result := not (VCVersionInstalled(VC_2022_REDIST_X64_ADD) and VCVersionInstalled(VC_2022_REDIST_X64_ADD))
+  Result := not (VCVersionInstalled(VC_2022_UPD_REDIST_X64_ADD) and VCVersionInstalled(VC_2022_UPD_REDIST_X64_ADD))
 end; 
 
 function GetInstallDir(Value: string): string;
